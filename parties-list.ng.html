@@ -1,0 +1,15 @@
+<form>
+	<label>Name</label>
+	<input ng-model="partyList.newParty.name">
+	<label>Description</label>
+	<input ng-model="partyList.newParty.description">
+	<button ng-click="partyList.parties.save(partyList.newParty); partyList.newParty='';">Add</button>
+	<button ng-click="partyList.removeAll()">Remove All</button>
+</form>
+<ul>
+	<li ng-repeat="party in partyList.parties">
+		<a href="/parties/{{party._id}}">{{party.name}}</a>
+		<p>{{party.description}}</p>
+		<button ng-click="partyList.remove(party)">X</button>
+	</li>
+</ul>
