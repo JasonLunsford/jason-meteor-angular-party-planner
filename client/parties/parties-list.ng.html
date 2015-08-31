@@ -3,7 +3,7 @@
 	<input ng-model="partyList.newParty.name">
 	<label>Description</label>
 	<input ng-model="partyList.newParty.description">
-	<button ng-click="partyList.parties.save(partyList.newParty); partyList.newParty='';">Add</button>
+	<button ng-click="partyList.add(partyList.newParty)">Add</button>
 	<button ng-click="partyList.removeAll()">Remove All</button>
 </form>
 <ul>
