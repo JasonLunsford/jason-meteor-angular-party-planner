@@ -1,3 +1,13 @@
+/*angular.module("socially").run([
+	"$rootScope",
+	"$location",
+	function($rootScope, $state) {
+		$rootScope.$on("$stateChangeError", function(event, next, previous, error) {
+			if (error === "AUTH_REQUIRED") {
+			  $state.go("/parties");
+			}
+		});
+	}]);*/
 
 angular.module('socially').config([
 	'$urlRouterProvider',
@@ -17,14 +27,15 @@ angular.module('socially').config([
 			.state('partyDetails', {
 				url: '/parties/:partyId',
 				templateUrl: 'client/parties/party-details.ng.html',
-				controller: 'PartyDetailsCtrl as partyDeets'/*,
+				controller: 'PartyDetailsCtrl as partyDeets',
 				resolve: {
 					"currentUser": ["meteor", function($meteor) {
-						// 3 functions we can use, this one rejects promise if user not logged in
+						// 3 functions we can use, this one rejects promise if
+						// user not logged in
 						return $meteor.requireUser();
 						// .waitForUser() and .requireValidUser() are the others
 					}]
-				}*/
+				}
 			});
 
 		$urlRouterProvider.otherwise('/parties');

@@ -5,9 +5,8 @@ angular.module('socially').controller('PartiesListCtrl', [
 
 		this.parties = $meteor.collection(Parties);
 
-		this.add = function(party) {
-			party.owner=$rootScope.currentUser._id;
-			this.parties.push(party);
+		this.showMe = function(party) {
+			//console.log($rootScope.currentUser._id);
 		};
 
 		this.remove = function(party) {
