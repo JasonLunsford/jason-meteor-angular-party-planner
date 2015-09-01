@@ -1,13 +1,17 @@
-/*angular.module("socially").run([
+// Careful, tutorial outlining run() method is buggy. For proper usage see:
+// http://angular-meteor.com/api/auth
+angular.module("socially").run([
 	"$rootScope",
-	"$location",
+	"$state",
 	function($rootScope, $state) {
-		$rootScope.$on("$stateChangeError", function(event, next, previous, error) {
+		// yup, six parameters
+		$rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+			console.log("error: ", error);
 			if (error === "AUTH_REQUIRED") {
-			  $state.go("/parties");
+			  $state.go("parties");
 			}
 		});
-	}]);*/
+	}]);
 
 angular.module('socially').config([
 	'$urlRouterProvider',
@@ -29,7 +33,7 @@ angular.module('socially').config([
 				templateUrl: 'client/parties/party-details.ng.html',
 				controller: 'PartyDetailsCtrl as partyDeets',
 				resolve: {
-					"currentUser": ["meteor", function($meteor) {
+					"currentUser": ["$meteor", function($meteor) {
 						// 3 functions we can use, this one rejects promise if
 						// user not logged in
 						return $meteor.requireUser();
