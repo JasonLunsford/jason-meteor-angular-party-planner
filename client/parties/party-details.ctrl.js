@@ -10,16 +10,18 @@ angular.module('socially').controller('PartyDetailsCtrl', [
 	'$state',
 	function($scope, $stateParams, $meteor, $state) {
 
+		var that = this;
+
 		// adding false as 3rd parameter prevents autosaving object on every change
 		// $meteor.object will find first object that matches 2nd argument ($stateParams.partyId)
-		this.party = $meteor.object(Parties, $stateParams.partyId, false).subscribe('parties');
+		that.party = $meteor.object(Parties, $stateParams.partyId, false).subscribe('parties');
 		// binding users object to the Meteor.users collection, and passing "false"
 		// prevents changes in client from automatically propogating to Meteor collection.
 		// $meteor.collection does not afford a built in query, unlike $meteor.object
-		this.users = $meteor.collection(Meteor.users, false).subscribe('users');
+		that.users = $meteor.collection(Meteor.users, false).subscribe('users');
 
-		this.save = function() {
-			this.party.save().then(function(numberOfDocs) {
+		that.save = function() {
+			that.party.save().then(function(numberOfDocs) {
 				console.log('doc '+numberOfDocs+' saved!');
 				$state.go("parties");
 			}, function(error) {
@@ -27,11 +29,11 @@ angular.module('socially').controller('PartyDetailsCtrl', [
 			});
 		};
 
-		this.reset = function() {
-			this.party.reset();
+		that.reset = function() {
+			that.party.reset();
 		};
 
-		this.cancel = function() {
+		that.cancel = function() {
 			$state.go("parties");
 		};
 

@@ -1,4 +1,4 @@
-Meteor.publish("parties", function() {
+Meteor.publish("parties", function(options) {
 	return Parties.find({
 		// $or, $and, and $exists are Mongo operators used for writing queries
 		// such as this one
@@ -15,5 +15,5 @@ Meteor.publish("parties", function() {
 				// and owner userId must exist
 				{owner: {$exists: true}}
 			]}
-		]});
+		]}, options);
 });

@@ -9,9 +9,11 @@
 	<button ng-click="partyList.removeAll()">Remove All</button>
 </form>
 <ul>
-	<li ng-repeat="party in partyList.parties">
+	<li dir-paginate="party in partyList.parties | itemsPerPage: partyList.perPage"
+		total-items="partiesCount.count">
 		<a href="/parties/{{party._id}}" ng-click="partyList.showMe()">{{party.name}}</a>
 		<p>{{party.description}}</p>
 		<button ng-click="partyList.remove(party)">X</button>
 	</li>
 </ul>
+<dir-pagination-controls on-page-change="partyList.pageChanged(newPageNumber)"></dir-pagination-controls>
