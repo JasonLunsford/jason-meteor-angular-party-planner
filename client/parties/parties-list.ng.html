@@ -3,6 +3,8 @@
 	<input ng-model="partyList.newParty.name">
 	<label>Description</label>
 	<input ng-model="partyList.newParty.description">
+	<label>Public</label>
+	<input type="checkbox" ng-model="partyList.newParty.public">
 	<button ng-click="partyList.newParty.owner=$root.currentUser._id; partyList.parties.push(partyList.newParty)">Add</button>
 	<button ng-click="partyList.removeAll()">Remove All</button>
 </form>

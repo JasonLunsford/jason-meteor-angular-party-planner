@@ -1,9 +1,18 @@
 <p>
-	Details for party number {{ partyDeets.partyId }} coming soon. W00t W00t!
+	Details for party <strong>{{ partyDeets.party.name }}</strong> coming soon. W00t W00t!
 </p>
 <div>
 	<input ng-model="partyDeets.party.name">
 	<input ng-model="partyDeets.party.description">
+	<label>Is public?</label>
+	<input type="checkbox" ng-model="partyDeets.party.public">
+
+	<ul>
+		Users:
+		<li ng-repeat="user in partyDeets.users">
+			<div>{{ user.emails[0].address }}</div>
+		</li>
+	</ul>
 
 	<button ng-click="partyDeets.save()">Save</button>
 	<button ng-click="partyDeets.reset()">Reset</button>

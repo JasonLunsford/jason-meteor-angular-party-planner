@@ -4,9 +4,10 @@ angular.module("socially").run([
 	"$rootScope",
 	"$state",
 	function($rootScope, $state) {
-		// yup, six parameters
+		// yup, $stateChangeError takes six parameters
+		// anyway, catch error thrown when the $meteor.requireUser() promise is
+		// rejected and redirect user back to login page
 		$rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
-			console.log("error: ", error);
 			if (error === "AUTH_REQUIRED") {
 			  $state.go("parties");
 			}
@@ -26,7 +27,17 @@ angular.module('socially').config([
 			.state('parties', {
 				url: '/parties',
 				templateUrl: 'client/parties/parties-list.ng.html',
-				controller: 'PartiesListCtrl as partyList'
+				controller: 'PartiesListCtrl as partyList' //,
+				// example of resolving a subscription in $state's resolve method:
+				/*
+				resolve: {
+					'subscribe': [
+						'$meteor', function($meteor) {
+							return $meteor.subscribe('parties');
+						}
+					]
+				}
+				*/
 			})
 			.state('partyDetails', {
 				url: '/parties/:partyId',
@@ -35,9 +46,11 @@ angular.module('socially').config([
 				resolve: {
 					"currentUser": ["$meteor", function($meteor) {
 						// 3 functions we can use, this one rejects promise if
-						// user not logged in
+						// any old user not logged in
 						return $meteor.requireUser();
 						// .waitForUser() and .requireValidUser() are the others
+						// reference:
+						// http://angular-meteor.com/api/auth
 					}]
 				}
 			});

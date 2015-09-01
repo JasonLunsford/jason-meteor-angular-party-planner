@@ -3,7 +3,10 @@ angular.module('socially').controller('PartiesListCtrl', [
 	'$meteor',
 	function($rootScope, $meteor) {
 
-		this.parties = $meteor.collection(Parties);
+		// this line is functionally equivolant to these two lines:
+		// $meteor.subscribe('parties');
+		// this.parties = $meteor.collection(Parties);
+		this.parties = $meteor.collection(Parties).subscribe('parties');
 
 		this.showMe = function(party) {
 			//console.log($rootScope.currentUser._id);
@@ -18,7 +21,8 @@ angular.module('socially').controller('PartiesListCtrl', [
 		};
 
 		this.removeAll = function() {
-			// note w/o item remove nukes all documents in collection
+			// note w/o parameter remove will nuke all documents in collection
+			// belonging to user (if user security set up)
 			this.parties.remove();
 		};
 	}]);
