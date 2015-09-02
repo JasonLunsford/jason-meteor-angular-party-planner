@@ -1,19 +1,26 @@
 <form>
 	<label>Name</label>
-	<input ng-model="partyList.newParty.name">
+	<input ng-model="newParty.name">
 	<label>Description</label>
-	<input ng-model="partyList.newParty.description">
+	<input ng-model="newParty.description">
 	<label>Public</label>
-	<input type="checkbox" ng-model="partyList.newParty.public">
-	<button ng-click="partyList.newParty.owner=$root.currentUser._id; partyList.parties.push(partyList.newParty)">Add</button>
-	<button ng-click="partyList.removeAll()">Remove All</button>
+	<input type="checkbox" ng-model="newParty.public">
+	<button ng-click="newParty.owner=$root.currentUser._id; parties.push(partyList.newParty)">Add</button>
+	<button ng-click="removeAll()">Remove All</button>
 </form>
 <ul>
-	<li dir-paginate="party in partyList.parties | itemsPerPage: partyList.perPage"
+	<h2>Parties:</h2>
+	<div>
+		<select ng-model="orderProperty">
+			<option value="1">Ascending</option>
+			<option value="-1">Descending</option>
+		</select>
+	</div>
+	<li dir-paginate="party in parties | itemsPerPage: perPage"
 		total-items="partiesCount.count">
-		<a href="/parties/{{party._id}}" ng-click="partyList.showMe()">{{party.name}}</a>
+		<a href="/parties/{{party._id}}">{{party.name}}</a>
 		<p>{{party.description}}</p>
-		<button ng-click="partyList.remove(party)">X</button>
+		<button ng-click="remove(party)">X</button>
 	</li>
 </ul>
-<dir-pagination-controls on-page-change="partyList.pageChanged(newPageNumber)"></dir-pagination-controls>
+<dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>

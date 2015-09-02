@@ -27,7 +27,7 @@ angular.module('socially').config([
 			.state('parties', {
 				url: '/parties',
 				templateUrl: 'client/parties/parties-list.ng.html',
-				controller: 'PartiesListCtrl as partyList' //,
+				controller: 'PartiesListCtrl' //,
 				// example of resolving a subscription in $state's resolve method:
 				/*
 				resolve: {

@@ -1,4 +1,18 @@
 Meteor.publish("parties", function(options) {
+	// reference for the noReady flag:
+	// https://github.com/percolatestudio/publish-counts#readiness
+	Counts.publish(this, 'numberOfParties', Parties.find({
+		$or:[
+			{$and:[
+				{'public': true},
+				{'public': {$exists: true}}
+			]},
+			{$and:[
+				{owner: this.userId},
+				{owner: {$exists: true}}
+			]}
+		]}), { noReady: true});
+
 	return Parties.find({
 		// $or, $and, and $exists are Mongo operators used for writing queries
 		// such as this one

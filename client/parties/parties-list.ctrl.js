@@ -1,49 +1,57 @@
+// removed Controller As, replaced with $scope, to make dealing
+// with sort/filtering/search easier. Improvement suggestion:
+// refactor using Controller As / eliminating $scope
+
 angular.module('socially').controller('PartiesListCtrl', [
 	'$rootScope',
 	'$meteor',
-	function($rootScope, $meteor) {
+	'$scope',
+	function($rootScope, $meteor, $scope) {
 
-		var that = this;
+		$scope.page = 1;
+		$scope.perPage = 3; 
+		$scope.sort = { name: 1 };
+		$scope.orderProperty = '1';
 
-		that.page = 1;
-		that.perPage = 3; 
-		that.sort = { name: 1 };
-
-		// this line is functionally equivolant to these two lines:
-		// $meteor.subscribe('parties');
-		// this.parties = $meteor.collection(Parties);
-		that.parties = $meteor.collection(function() {
+		$scope.parties = $meteor.collection(function() {
 			return Parties.find({}, {
-				sort: that.sort
+				sort: $scope.getReactively('sort')
 			});
 		});
 
-		$meteor.subscribe('parties', {
-			limit: parseInt(that.perPage),
-			skip: parseInt((that.page - 1) * that.perPage),
-			sort: that.sort
+		$meteor.autorun($scope, function() {
+			$meteor.subscribe('parties', {
+				limit: parseInt($scope.getReactively('perPage')),
+				skip: (parseInt($scope.getReactively('page')) - 1) * parseInt($scope.getReactively('perPage')),
+				sort: $scope.getReactively('sort')
+			}).then(function() {
+				$scope.partiesCount = $meteor.object(Counts, 'numberOfParties', false);
+				console.log($scope.partiesCount.count);
+			});
 		});
 
-		that.showMe = function() {
-			//console.log($rootScope.currentUser._id);
-		};
-
-		that.remove = function(party) {
+		$scope.remove = function(party) {
 			// splice the array, old-school style
 			// this.parties.splice(this.parties.indexOf(party), 1);
 
 			// or use Meteor's helper function .remove(item)
-			that.parties.remove(party);
+			$scope.parties.remove(party);
 		};
 
-		that.removeAll = function() {
+		$scope.removeAll = function() {
 			// note w/o parameter remove will nuke all documents in collection
 			// belonging to user (if user security set up)
-			that.parties.remove();
+			$scope.parties.remove();
 		};
 
-		that.pageChanged = function(newPage) {
-			that.page = newPage;
+		$scope.pageChanged = function(newPage) {
+			$scope.page = newPage;
 		};
+
+		$scope.$watch('orderProperty', function() {
+			if ($scope.orderProperty) {
+				$scope.sort = {name: parseInt($scope.orderProperty)};
+			}
+		});
 
 	}]);

@@ -13,6 +13,7 @@ To prepare Meteor for real world use remove these packages:
 
 Add these packages:
 	* meteor add accounts-password (enables user level Collections security)
+	* meteor add tmeasday:publish-counts (allows publishing of the full count of a publication to Clients)
 
 My Tweaks
 ---------
