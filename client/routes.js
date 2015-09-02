@@ -42,7 +42,7 @@ angular.module('socially').config([
 			.state('partyDetails', {
 				url: '/parties/:partyId',
 				templateUrl: 'client/parties/party-details.ng.html',
-				controller: 'PartyDetailsCtrl as partyDeets',
+				controller: 'PartyDetailsCtrl',
 				resolve: {
 					"currentUser": ["$meteor", function($meteor) {
 						// 3 functions we can use, this one rejects promise if
