@@ -13,6 +13,7 @@ angular.module('socially').controller('PartyDetailsCtrl', [
 		// adding false as 3rd parameter prevents autosaving object on every change
 		// $meteor.object will find first object that matches 2nd argument ($stateParams.partyId)
 		$scope.party = $meteor.object(Parties, $stateParams.partyId, false);
+
 		// binding users object to the Meteor.users collection, and passing "false"
 		// prevents changes in client from automatically propogating to Meteor collection.
 		// $meteor.collection does not afford a built in query, unlike $meteor.object

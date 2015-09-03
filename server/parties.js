@@ -1,5 +1,5 @@
 Meteor.publish("parties", function(options, searchString) {
-	if (searchString === null) { searchString = ''; }
+	if (typeof searchString === 'undefined' || searchString === null) { searchString = ''; }
 	// reference for the noReady flag:
 	// https://github.com/percolatestudio/publish-counts#readiness
 	Counts.publish(this, 'numberOfParties', Parties.find({

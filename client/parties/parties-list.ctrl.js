@@ -26,7 +26,6 @@ angular.module('socially').controller('PartiesListCtrl', [
 				sort: $scope.getReactively('sort')
 			}, $scope.getReactively('search')).then(function() {
 				$scope.partiesCount = $meteor.object(Counts, 'numberOfParties', false);
-				console.log($scope.partiesCount.count);
 			});
 		});
 
