@@ -13,6 +13,8 @@ angular.module('socially').controller('PartiesListCtrl', [
 		$scope.sort = { name: 1 };
 		$scope.orderProperty = '1';
 
+		$scope.$meteorSubscribe('users');
+
 		$scope.parties = $meteor.collection(function() {
 			return Parties.find({}, {
 				sort: $scope.getReactively('sort')
@@ -28,6 +30,25 @@ angular.module('socially').controller('PartiesListCtrl', [
 				$scope.partiesCount = $meteor.object(Counts, 'numberOfParties', false);
 			});
 		});
+
+		$scope.getUserById = function(userId) {
+			return Meteor.users.findOne(userId);
+		};
+
+		$scope.creator = function(party) {
+			if (!party)
+				return;
+			var owner = $scope.getUserById(party.owner);
+			if (!owner)
+				return "nobody";
+
+			if ($rootScope.currentUser)
+				if ($rootScope.currentUser._id)
+					if (owner._id === $rootScope.currentUser._id)
+						return 'me';
+
+			return owner;
+		};
 
 		$scope.remove = function(party) {
 			// splice the array, old-school style
