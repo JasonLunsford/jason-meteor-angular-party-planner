@@ -7,8 +7,8 @@ Meteor.startup(function () {
 		// rebooted
 		var parties = [
 			{
-				'name': 'Dubstep-Free Zone',
-				'description': 'Can we please just for an evening not listen to dubstep?',
+				'name': 'Outlaw Country',
+				'description': 'country when it was still cool',
 				'public':true
 			},
 			{
@@ -19,6 +19,21 @@ Meteor.startup(function () {
 			{
 				'name': 'Savage Lounging',
 				'description': 'Leisure suit required. And only fiercest manners.',
+				'public':true
+			},
+			{
+				'name': 'Hip Hop Mega Bash',
+				'description': 'Rocking underground hits all night',
+				'public':true
+			},
+			{
+				'name': 'Liquid Jazz Groove',
+				'description': 'groove so smooth you will move and move',
+				'public':true
+			},
+			{
+				'name': 'Metal BOX THROWDOWN',
+				'description': 'come get your face stomped',
 				'public':true
 			}
 		];
