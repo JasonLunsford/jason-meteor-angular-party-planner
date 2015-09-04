@@ -13,7 +13,8 @@ angular.module('socially').controller('PartiesListCtrl', [
 		$scope.sort = { name: 1 };
 		$scope.orderProperty = '1';
 
-		$scope.$meteorSubscribe('users');
+		//$scope.$meteorSubscribe('users');
+		$scope.users = $scope.$meteorCollection(Meteor.users, false).subscribe('users');
 
 		$scope.parties = $meteor.collection(function() {
 			return Parties.find({}, {
@@ -31,6 +32,24 @@ angular.module('socially').controller('PartiesListCtrl', [
 			});
 		});
 
+		$scope.rsvp = function(partyId, rsvp) {
+			$meteor.call('rsvp', partyId, rsvp).then(
+				function(data) {
+					console.log('RSVP action successful!');
+				},
+				function(err) {
+					console.log('Failure in RSVP action: ', err);
+				}
+			);
+		};
+
+		$scope.outstandingInvitations = function(party) {
+			return _.filter($scope.users, function (user) {
+				return (_.contains(party.invited, user._id) && 
+				!_.findWhere(party.rsvps, {user: user._id}));
+			});
+		};
+
 		$scope.getUserById = function(userId) {
 			return Meteor.users.findOne(userId);
 		};
@@ -40,12 +59,12 @@ angular.module('socially').controller('PartiesListCtrl', [
 				return;
 			var owner = $scope.getUserById(party.owner);
 			if (!owner)
-				return "nobody";
+				return "Unknown";
 
 			if ($rootScope.currentUser)
 				if ($rootScope.currentUser._id)
 					if (owner._id === $rootScope.currentUser._id)
-						return 'me';
+						return 'Me!';
 
 			return owner;
 		};

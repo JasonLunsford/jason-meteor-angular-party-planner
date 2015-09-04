@@ -1,3 +1,11 @@
+var contactEmail = function (user) {
+  if (user.emails && user.emails.length)
+    return user.emails[0].address;
+  if (user.services && user.services.facebook && user.services.facebook.email)
+    return user.services.facebook.email;
+  return null;
+};
+
 // "Parties" available client & server, not owned exclusively by either
 // contents can be modified programmatically in client, by user via View,
 // or by server (due maybe to another client making changes)
@@ -16,10 +24,11 @@ Parties.allow({
 });
 
 Meteor.methods({
-	invite: function(partyId, userId) {
+	invite: function (partyId, userId) {
 		check(partyId, String);
 		check(userId, String);
 		var party = Parties.findOne(partyId);
+
 		if (!party)
 			throw new Meteor.Error(404, "No such party");
 		if (party.owner !== this.userId)
@@ -47,13 +56,44 @@ Meteor.methods({
 				});
 			}
 		}
+	},
+	rsvp: function (partyId, rsvp) {
+		check(partyId, String);
+		check(rsvp, String);
+		var party = Parties.findOne(partyId);
+		var rsvpIndex = _.indexOf(_.pluck(party.rsvps, 'user'), this.userId);
+
+		if (!this.userId)
+			throw new Meteor.Error(403, "You must be logged in to RSVP");
+		if (!_.contains(['yes', 'no', 'maybe'], rsvp))
+			throw new Meteor.Error(400, "Invalid RSVP answer");
+		if (!party)
+			throw new Meteor.Error(404, "No such party dude are you high?");
+		if (!party.public && party.owner !== this.userId && !_.contains(party.invited, this.userId))
+			throw new Meteor.Error(403, "Not invited to this party sunshine - Crash It!");
+
+		if (rsvpIndex !== -1) {
+			// Update existing RSVP entry on server (mongo) and client (minimongo)
+			if (Meteor.isServer) {
+				// Not sure what's going on with the naked $, probably a mongo specific
+				// variable/special character
+				Parties.update(
+					{_id: partyId, "rsvps.user": this.userId},
+					{$set: {"rsvps.$.rsvp": rsvp}} // <-- the mystery $
+				);
+			} else {
+				// minimongo doesn't support the mystery $ in modifier, so workaround
+				// for clients below. this is safe on client since dealing w only one
+				// thread and thus index will be accurate
+				var modifier = {$set: {}};
+				modifier.$set["rsvps." + rsvpIndex + ".rsvp"] = rsvp;
+				Parties.update(partyId, modifier);
+			}
+			// Next Version: Email RSVP updates to party invitees! Woot!
+		} else {
+			// Add new RSVP entry
+			Parties.update(partyId, {$push: {rsvps: {user: this.userId, rsvp: rsvp}}});
+		}
 	}
 });
 
-var contactEmail = function (user) {
-  if (user.emails && user.emails.length)
-    return user.emails[0].address;
-  if (user.services && user.services.facebook && user.services.facebook.email)
-    return user.services.facebook.email;
-  return null;
-};

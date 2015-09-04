@@ -21,8 +21,50 @@
 		total-items="partiesCount.count">
 		<a href="/parties/{{party._id}}">{{party.name}}</a>
 		<p>{{party.description}}</p>
-		<button ng-click="remove(party)">X</button>
 		<p><small>Posted by {{ creator(party) | displayName }}</small></p>
+		<button ng-click="remove(party)">X</button>
+
+		<div>
+			<input type="button" 
+				   value="Party Time!"
+				   ng-click="rsvp(party._id, 'yes')" >
+			<input type="button" 
+				   value="Hopefully"
+				   ng-click="rsvp(party._id, 'maybe')" >
+			<input type="button" 
+				   value="No"
+				   ng-click="rsvp(party._id, 'no')" >
+		</div>
+		<div>
+			<p><strong>Invite Results</strong></p>
+
+			<p>Party Time!</p>
+			<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'yes'}">
+				{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+			</div>
+			<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'yes'}).length }}</span></p>
+
+			<p>No</p>
+			<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'no'}">
+				{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+			</div>
+			<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'no'}).length }}</span></p>
+
+			<p>Hopefully</p>
+			<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'maybe'}">
+				{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+			</div>
+			<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'maybe'}).length }}</span></p>
+		</div>
+
+		<div>
+			<p><strong>Still waiting for a reply from:</strong></p>
+			<ul>
+				<li ng-repeat="invitedUser in outstandingInvitations(party)">
+					{{ invitedUser | displayName }}
+				</li>
+			</ul>
+		</div>
 	</li>
 </ul>
 <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
