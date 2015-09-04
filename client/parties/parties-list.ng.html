@@ -1,17 +1,44 @@
-<form ng-show="$root.currentUser">
-	<label>Name</label>
-	<input ng-model="newParty.name">
-	<label>Description</label>
-	<input ng-model="newParty.description">
-	<label>Public</label>
-	<input type="checkbox" ng-model="newParty.public">
-	<button ng-click="newParty.owner=$root.currentUser._id; parties.push(newParty)">Add</button>
-	<button ng-click="removeAll()">Remove All</button>
-</form>
-<div ng-hide="$root.currentUser || $root.loggingIn">
-	<p>Log in to create a party!</p>
+<div class="row">
+	<div class="col-sm-12">
+		<form class="form-horizontal"
+			  ng-show="$root.currentUser">
+			<div class="control-group">
+				<label class="control-label"
+					   for="inputName">Name</label>
+				<div class="controls">
+					<input type="text"
+						   id="inputName"
+						   placeholder="Party Name"
+						   ng-model="newParty.name">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label"
+					   for="inputDesc">Description</label>
+				<div class="controls">
+					<input type="text"
+						   id="inputDesc"
+						   placeholder="Describe Your Party"
+						   ng-model="newParty.description">
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<label class="checkbox">
+						<input type="checkbox"
+							   ng-model="newParty.public">Public
+					</label>
+					<button class="btn"
+							ng-click="newParty.owner=$root.currentUser._id; parties.push(newParty)">Add</button>
+					<button class="btn"
+							ng-click="removeAll()">Remove All</button>
+				</div>
+			</div>
+		</form>
+		<p ng-hide="$root.currentUser || $root.loggingIn">Log in to create a party!</p>
+	</div>
 </div>
-<ul>
+<div class="row">
 	<h2>Parties:</h2>
 	<div>
 		<input type="search" ng-model="search" placeholder="Search">
@@ -20,7 +47,8 @@
 			<option value="-1">Descending</option>
 		</select>
 	</div>
-	<hr />
+</div>
+<div class="row">
 	<div class="angular-google-map-container">
 		<ui-gmap-google-map center="party.location || map.center"
 							zoom="map.zoom">
@@ -33,61 +61,67 @@
 			</ui-gmap-markers>
 		</ui-gmap-google-map>
 	</div>
-	<li dir-paginate="party in parties | itemsPerPage: perPage"
-		total-items="partiesCount.count">
-		<a href="/parties/{{party._id}}">{{party.name}}</a>
-		<p>{{party.description}}</p>
-		<p><small>Posted by {{ creator(party) | displayName }}</small></p>
-		<button ng-click="remove(party)"
-				ng-show="$root.currentUser && $root.currentUser._id == party.owner">X</button>
+</div>
+<div class="row">
+	<ul>
+		<li dir-paginate="party in parties | itemsPerPage: perPage"
+			total-items="partiesCount.count">
+			<a href="/parties/{{party._id}}">{{party.name}}</a>
+			<p>{{party.description}}</p>
+			<p><small>Posted by {{ creator(party) | displayName }}</small></p>
+			<button ng-click="remove(party)"
+					ng-show="$root.currentUser && $root.currentUser._id == party.owner">X</button>
 
-		<div ng-show="$root.currentUser">
-			<input type="button" 
-				   value="Party Time!"
-				   ng-click="rsvp(party._id, 'yes')" >
-			<input type="button" 
-				   value="Hopefully"
-				   ng-click="rsvp(party._id, 'maybe')" >
-			<input type="button" 
-				   value="No"
-				   ng-click="rsvp(party._id, 'no')" >
-		</div>
-		<div ng-hide="$root.currentUser">
-			<i>Sign in to RSVP for this par-tay!</i>
-		</div>
-		<div>
-			<p><strong>Invite Results</strong></p>
-
-			<p>Party Time!</p>
-			<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'yes'}">
-				{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+			<div ng-show="$root.currentUser">
+				<input type="button" 
+					   value="Party Time!"
+					   ng-click="rsvp(party._id, 'yes')" >
+				<input type="button" 
+					   value="Hopefully"
+					   ng-click="rsvp(party._id, 'maybe')" >
+				<input type="button" 
+					   value="No"
+					   ng-click="rsvp(party._id, 'no')" >
 			</div>
-			<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'yes'}).length }}</span></p>
-
-			<p>No</p>
-			<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'no'}">
-				{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+			<div ng-hide="$root.currentUser">
+				<i>Sign in to RSVP for this par-tay!</i>
 			</div>
-			<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'no'}).length }}</span></p>
+			<div>
+				<p><strong>Invite Results</strong></p>
 
-			<p>Hopefully</p>
-			<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'maybe'}">
-				{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+				<p>Party Time!</p>
+				<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'yes'}">
+					{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+				</div>
+				<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'yes'}).length }}</span></p>
+
+				<p>No</p>
+				<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'no'}">
+					{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+				</div>
+				<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'no'}).length }}</span></p>
+
+				<p>Hopefully</p>
+				<div ng-repeat="rsvp in party.rsvps | filter:{rsvp:'maybe'}">
+					{{ getUserById(rsvp.user) | displayName }} - {{ rsvp.rsvp }}
+				</div>
+				<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'maybe'}).length }}</span></p>
 			</div>
-			<p>Total: <span>{{ (party.rsvps | filter:{rsvp:'maybe'}).length }}</span></p>
-		</div>
 
-		<div ng-if="!party.public">
-			<p><strong>Still waiting for a reply from:</strong></p>
-			<ul>
-				<li ng-repeat="invitedUser in outstandingInvitations(party)">
-					{{ invitedUser | displayName }}
-				</li>
-			</ul>
-		</div>
-		<div ng-if="party.public">
-			<p>Public Party - Come on, come all!</p>
-		</div>
-	</li>
-</ul>
-<dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+			<div ng-if="!party.public">
+				<p><strong>Still waiting for a reply from:</strong></p>
+				<ul>
+					<li ng-repeat="invitedUser in outstandingInvitations(party)">
+						{{ invitedUser | displayName }}
+					</li>
+				</ul>
+			</div>
+			<div ng-if="party.public">
+				<p>Public Party - Come on, come all!</p>
+			</div>
+		</li>
+	</ul>
+</div>
+<div class="row">
+	<dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+</div>
