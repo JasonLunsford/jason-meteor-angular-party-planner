@@ -5,5 +5,6 @@
 angular.module('socially', [
 	'angular-meteor',
 	'ui.router',
-	'angularUtils.directives.dirPagination'
+	'angularUtils.directives.dirPagination',
+	'uiGmapgoogle-maps'
 ]);

@@ -21,6 +21,18 @@
 		</select>
 	</div>
 	<hr />
+	<div class="angular-google-map-container">
+		<ui-gmap-google-map center="party.location || map.center"
+							zoom="map.zoom">
+			<ui-gmap-markers coords="'location'"
+							models="parties"
+							click="onClicked()"
+							fit="true"
+							doRebuildAll="true"
+							idkey="'_id'">
+			</ui-gmap-markers>
+		</ui-gmap-google-map>
+	</div>
 	<li dir-paginate="party in parties | itemsPerPage: perPage"
 		total-items="partiesCount.count">
 		<a href="/parties/{{party._id}}">{{party.name}}</a>
