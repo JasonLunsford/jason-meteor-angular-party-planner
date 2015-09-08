@@ -1,6 +1,13 @@
+body { padding-top: 70px; }
+
 .angular-google-map-container {
 	height:400px;
 	width:400px;
+}
+
+.login-error {
+	color:#ff0000;
+	margin-top:20px;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {

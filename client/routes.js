@@ -24,6 +24,33 @@ angular.module('socially').config([
 		$locationProvider.html5Mode(true);
 
 		$stateProvider
+			.state('login', {
+				url: '/login',
+				templateUrl: 'client/users/login.ng.html',
+				controller: 'LoginCtrl as lc'
+			})
+			.state('register', {
+				url: '/register',
+				templateUrl: 'client/users/register.ng.html',
+				controller: 'RegisterCtrl as rc'
+			})
+			.state('resetpw', {
+				url: '/resetpw',
+				templateUrl: 'client/users/reset-password.ng.html',
+				controller: 'ResetCtrl as rpc'
+			})
+			.state('logout', {
+				url: '/logout',
+				resolve: {
+					"logout": ['$meteor', '$state', function($meteor, $state) {
+						return $meteor.logout().then(function() {
+							$state.go('parties');
+						}, function(err) {
+							console.log('Logout error: ', err);
+						});
+					}]
+				}
+			})
 			.state('parties', {
 				url: '/parties',
 				templateUrl: 'client/parties/parties-list.ng.html',

@@ -1,0 +1,34 @@
+<div class="col-sm-12">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<p class="panel-title">Sign Up Please</p>
+		</div>
+		<div class="panel-body">
+			<form>
+				<div class="form-group">
+					<label for="registerEmail">Email</label>
+					<input type="email"
+						   class="form-control"
+						   id="registerEmail"
+						   placeholder="Email"
+						   aria-label="email"
+						   ng-model="rc.credentials.email">
+				</div>
+				<div class="form-group">
+					<label for="registerPassword">Password</label>
+					<input type="password"
+						   class="form-control"
+						   id="registerPassword"
+						   placeholder="Password"
+						   aria-label="password"
+						   ng-model="rc.credentials.password">
+				</div>
+				<button type="submit"
+						class="btn btn-default"
+						aria-label="register"
+						ng-click="rc.register()">Sign Up</button>
+			</form>
+			<p ng-if="rc.error">{{ rc.error }}</p>
+		</div>
+	</div>
+</div>
