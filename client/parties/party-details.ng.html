@@ -1,42 +1,71 @@
-<p>
-	Details for party <strong>{{ party.name }}</strong> coming soon. W00t W00t!
-</p>
-<div>
-	<input ng-model="party.name"
-		   ng-disabled="party.owner != $root.currentUser._id">
-	<input ng-model="party.description"
-		   ng-disabled="party.owner != $root.currentUser._id">
-	<label>Is public?</label>
-	<input type="checkbox"
-		   ng-model="party.public"
-		   ng-disabled="party.owner != $root.currentUser._id">
-
-	<p ng-show="canInvite()">Users:</p>
-	<ul ng-show="canInvite()">
-		<li ng-repeat="user in users | uninvited:party">
-			<p>{{ user | displayName }}</p>
-			<button ng-click="invite(user)">Invite</button>
-		</li>
-		<li ng-if="(users | uninvited:party).length <= 0">
-			<p>Everyone has already been invited.</p>
-		</li>
-	</ul>
-
-	<div class="party-details-maps">
-		<div class="angular-google-map-container">
-			<ui-gmap-google-map center="party.location || map.center"
-								events="map.events"
-								zoom="map.zoom">
-				<ui-gmap-marker coords="party.location"
-								options="map.marker.options"
-								events="map.marker.events"
-								idkey="party._id">
-				</ui-gmap-marker>
-			</ui-gmap-google-map>
+<div class="col-sm-12">
+	<h2>{{ party.name }}</h2>
+</div>
+<div class="col-sm-12">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<p class="panel-title">The Deets</p>
+		</div>
+		<div class="panel-body">
+			<p>{{party.description}}</p>
+		</div>
+		<div class="panel-footer"
+			 ng-if="party.owner != $root.currentUser._id && party.public">
+			Public Party Baby!
 		</div>
 	</div>
-
-	<button ng-click="save()">Save</button>
-	<button ng-click="reset()">Reset</button>
-	<button ng-click="cancel()">Cancel</button>
+</div>
+<div class="col-sm-12 ng-cloak"
+	 ng-show="canInvite()">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<p class="panel-title">Party Control!</p>
+		</div>
+		<div class="panel-body">
+			<p>Invite These Weirdos:</p>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="user in users | uninvited:party">
+					<p>
+						{{ user | displayName }}
+						<button class="pull-right" ng-click="invite(user)">Invite</button>
+					</p>
+				</li>
+				<li class="list-group-item"  ng-if="(users | uninvited:party).length <= 0">
+					<p>Everyone has already been invited.</p>
+				</li>
+			</ul>
+			<form>
+				<div class="form-group">
+					<button class="btn btn-default"
+							ng-click="save()">Save</button>
+					<button class="btn btn-danger"
+							ng-click="reset()">Reset</button>
+					<button class="btn btn-default"
+							ng-click="cancel()">Cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="col-sm-12">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<p class="panel-title">Find Us Here!</p>
+		</div>
+		<div class="panel-body">
+			<div class="party-details-maps">
+				<div class="angular-google-map-container">
+					<ui-gmap-google-map center="party.location || map.center"
+										events="map.events"
+										zoom="map.zoom">
+						<ui-gmap-marker coords="party.location"
+										options="map.marker.options"
+										events="map.marker.events"
+										idkey="party._id">
+						</ui-gmap-marker>
+					</ui-gmap-google-map>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

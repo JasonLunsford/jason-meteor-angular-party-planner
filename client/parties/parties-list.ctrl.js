@@ -33,20 +33,6 @@ angular.module('socially').controller('PartiesListCtrl', [
 			});
 		});
 
-		$scope.parties.forEach( function (party) {
-			party.onClicked = function () {
-				$state.go('partyDetails', {partyId: party._id});
-			};
-		});
-
-		$scope.map = {
-			center: {
-				latitude: 45,
-				longitude: -73
-			},
-			zoom: 8
-		};
-
 		$scope.rsvp = function(partyId, rsvp) {
 			$meteor.call('rsvp', partyId, rsvp).then(
 				function(data) {
@@ -100,6 +86,10 @@ angular.module('socially').controller('PartiesListCtrl', [
 
 		$scope.pageChanged = function(newPage) {
 			$scope.page = newPage;
+		};
+
+		$scope.visitParty = function(partyId) {
+			$state.go('partyDetails', {partyId: partyId});
 		};
 
 		$scope.$watch('orderProperty', function() {
