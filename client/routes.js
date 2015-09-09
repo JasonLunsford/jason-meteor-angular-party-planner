@@ -24,37 +24,63 @@ angular.module('socially').config([
 		$locationProvider.html5Mode(true);
 
 		$stateProvider
-			.state('login', {
+			.state('root', {
+				url:'',
+				abstract:true,
+				views: {
+					'navigation': {
+						templateUrl: 'client/root/navigation.ng.html',
+						controller: 'NavigationCtrl'
+					}
+				}
+			})
+			.state('root.login', {
 				url: '/login',
-				templateUrl: 'client/users/login.ng.html',
-				controller: 'LoginCtrl as lc'
+				views: {
+					'container@': {
+						templateUrl: 'client/users/login.ng.html',
+						controller: 'LoginCtrl as lc'
+					}
+				}
 			})
-			.state('register', {
+			.state('root.register', {
 				url: '/register',
-				templateUrl: 'client/users/register.ng.html',
-				controller: 'RegisterCtrl as rc'
+				views: {
+					'container@': {
+						templateUrl: 'client/users/register.ng.html',
+						controller: 'RegisterCtrl as rc'
+					}
+				}
 			})
-			.state('resetpw', {
+			.state('root.resetpw', {
 				url: '/resetpw',
-				templateUrl: 'client/users/reset-password.ng.html',
-				controller: 'ResetCtrl as rpc'
+				views: {
+					'container@': {
+						templateUrl: 'client/users/reset-password.ng.html',
+						controller: 'ResetCtrl as rpc'
+					}
+				}
 			})
-			.state('logout', {
+			.state('root.logout', {
 				url: '/logout',
 				resolve: {
 					"logout": ['$meteor', '$state', function($meteor, $state) {
 						return $meteor.logout().then(function() {
-							$state.go('parties');
+							$state.go('root.parties');
 						}, function(err) {
 							console.log('Logout error: ', err);
 						});
 					}]
 				}
 			})
-			.state('parties', {
+			.state('root.parties', {
 				url: '/parties',
-				templateUrl: 'client/parties/parties-list.ng.html',
-				controller: 'PartiesListCtrl' //,
+				views: {
+					'container@': {
+						templateUrl: 'client/parties/parties-list.ng.html',
+						controller: 'PartiesListCtrl'						
+					}
+				}//,
 				// example of resolving a subscription in $state's resolve method:
 				/*
 				resolve: {
@@ -66,10 +92,14 @@ angular.module('socially').config([
 				}
 				*/
 			})
-			.state('partyDetails', {
+			.state('root.partyDetails', {
 				url: '/parties/:partyId',
-				templateUrl: 'client/parties/party-details.ng.html',
-				controller: 'PartyDetailsCtrl',
+				views: {
+					'container@': {
+						templateUrl: 'client/parties/party-details.ng.html',
+						controller: 'PartyDetailsCtrl'
+					}
+				},
 				resolve: {
 					"currentUser": ["$meteor", function($meteor) {
 						// 3 functions we can use, this one rejects promise if

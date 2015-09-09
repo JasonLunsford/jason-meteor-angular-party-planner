@@ -15,9 +15,9 @@ angular.module('socially').controller('RegisterCtrl', [
 		that.register = function () {
 			$meteor.createUser(that.credentials).then(
 				function() {
-					$state.go('parties');
+					$state.go('root.parties');
 				}, function(err) {
-					that.error = err;
+					that.error = "Registration " + err;
 				}
 			);
 		};

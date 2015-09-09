@@ -15,9 +15,9 @@ angular.module('socially').controller('LoginCtrl', [
 		that.login = function () {
 			$meteor.loginWithPassword(that.credentials.email, that.credentials.password).then(
 				function() {
-					$state.go('parties');
+					$state.go('root.parties');
 				}, function(err) {
-					that.error = err;
+					that.error = "Login " + err;
 				}
 			);
 		};

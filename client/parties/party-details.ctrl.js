@@ -34,7 +34,7 @@ angular.module('socially').controller('PartyDetailsCtrl', [
 		$scope.save = function() {
 			$scope.party.save().then(function(numberOfDocs) {
 				console.log('doc '+numberOfDocs+' saved!');
-				$state.go("parties");
+				$state.go("root.parties");
 			}, function(error) {
 				console.log('save error: ', error);
 			});
@@ -45,7 +45,7 @@ angular.module('socially').controller('PartyDetailsCtrl', [
 		};
 
 		$scope.cancel = function() {
-			$state.go("parties");
+			$state.go("root.parties");
 		};
 
 		$scope.canInvite = function() {

@@ -1,0 +1,20 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+		<a class="navbar-brand" href="/parties">Party Generator</a>
+		<ul class="nav navbar-nav navbar-right">
+			<li ng-show="$root.currentUser"><a href="/logout">Logout {{userName}}</a></li>
+			<li class="dropdown" ng-hide="$root.currentUser">
+				<a href="#"
+				   class="dropdown-toggle"
+				   data-toggle="dropdown"
+				   role="button"
+				   aria-haspopup="true"
+				   aria-expanded="false">Control Panel <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/login">Login</a></li>
+					<li><a href="/register">Sign Up</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</nav>

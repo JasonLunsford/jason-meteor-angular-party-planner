@@ -16,13 +16,21 @@ angular.module('socially').controller('ResetCtrl', [
 
 		that.error = '';
 
-		that.login = function () {
-			$meteor.forgotPassword(that.credentials.email).then(
-				function() {
-					$state.go('parties');
-				}, function(err) {
-					that.error = err;
-				}
-			);
+		that.reset = function () {
+			if (that.credentials.email) {
+				$meteor.forgotPassword({email: that.credentials.email}, function(err) {
+					if (err) {
+						if (err.message === 'User not found [403]') {
+							that.error = 'Sorry we cannot find this email. Try again?';
+						} else {
+							that.error = 'Ouch, something went wrong.';
+						}
+					} else {
+						that.error = 'Email sent - check your mailbox baby!';
+					}
+				});
+			} else {
+				that.error = 'Need an email address fool!';
+			}
 		};
 	}]);
