@@ -33,7 +33,7 @@
 		</div>
 		<div class="form-group">
 			<button class="btn btn-default"
-					ng-click="newParty.owner=$root.currentUser._id; parties.push(newParty); visitParty(newParty)">Add</button>
+					ng-click="newParty.owner=$root.currentUser._id; parties.push(newParty); showMeMyParty(newParty)">Add</button>
 			<button class="btn btn-default"
 					ng-click="removeAll()">Remove All</button>
 		</div>
@@ -141,17 +141,19 @@
 							<p class="panel-title">Notes and Such</p>
 						</div>
 						<div class="panel-body" ng-if="!party.public">
-							<p ng-if="outstandingInvitations(party) <= 0">
+						<div class="panel-body" ng-if="!party.public">
+							<p ng-if="outstandingInvitations(party)">
 								<strong>Everyone Invited!</strong>
 							</p>
-							<p ng-if="outstandingInvitations(party) > 0">
+							<p ng-if="!outstandingInvitations(party)">
 								<strong>Still waiting for a reply from:</strong>
 							</p>
-							<ul>
+							<ul ng-if="!outstandingInvitations(party)">
 								<li ng-repeat="invitedUser in outstandingInvitations(party)">
 									{{ invitedUser | displayName }}
 								</li>
 							</ul>
+						</div>
 						</div>
 						<div class="panel-body" ng-if="party.public">
 							<p><i ng-hide="$root.currentUser">Sign in to RSVP!</i></p>

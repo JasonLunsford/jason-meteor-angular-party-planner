@@ -21,17 +21,11 @@ angular.module('socially').controller('PartyDetailsCtrl', [
 		$scope.$meteorSubscribe('parties');
 
 		$scope.invite = function(user) {
-			$meteor.call('invite', $scope.party._id, user._id).then(
-				function(data) {
-					console.log('success inviting', data);
-				},
-				function(err) {
-					console.log('failed', err);
-				}
-			);
+			$meteor.call('invite', $scope.party._id, user._id);
 		};
 
 		$scope.save = function() {
+			// what the fuck is this magic save method supposed to do?!
 			$scope.party.save().then(function(numberOfDocs) {
 				console.log('doc '+numberOfDocs+' saved!');
 				$state.go("root.parties");
@@ -41,6 +35,8 @@ angular.module('socially').controller('PartyDetailsCtrl', [
 		};
 
 		$scope.reset = function() {
+			// $scope.party.reset() does nothing, need to make it work
+			// Rule 1: want it done right, write it yourself!
 			$scope.party.reset();
 		};
 
