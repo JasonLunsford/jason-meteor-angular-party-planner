@@ -16,3 +16,6 @@ email
 angularui:angular-google-maps
 fourseven:scss
 twbs:bootstrap
+cfs:standard-packages
+cfs:gridfs
+danialfarid:ng-file-upload

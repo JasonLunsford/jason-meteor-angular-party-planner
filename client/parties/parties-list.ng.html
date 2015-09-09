@@ -85,7 +85,7 @@
 					<p><small>Posted by {{ creator(party) | displayName }}</small></p>
 
 					<div class="ng-cloak"
-						 ng-show="$root.currentUser">
+						 ng-show="$root.currentUser && $root.currentUser._id !== party.owner">
 						<form>
 							<div class="form-group">
 								<button class="btn btn-success"
@@ -94,6 +94,15 @@
 										ng-click="rsvp(party._id, 'maybe')">Hopefully</button>
 								<button class="btn btn-danger"
 										ng-click="rsvp(party._id, 'no')">No</button>
+							</div>
+						</form>
+					</div>
+					<div class="ng-cloak"
+						 ng-show="$root.currentUser && $root.currentUser._id == party.owner">
+						<form>
+							<div class="form-group">
+								<button class="btn btn-primary"
+										ng-click="upload(party._id)">Upload Picture</button>
 							</div>
 						</form>
 					</div>

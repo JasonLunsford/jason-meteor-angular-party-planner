@@ -16,6 +16,7 @@ angular.module('socially').controller('PartiesListCtrl', [
 
 		//$scope.$meteorSubscribe('users');
 		$scope.users = $scope.$meteorCollection(Meteor.users, false).subscribe('users');
+		$scope.images = $meteor.collectionFS(Images, false, Images).subscribe('images');
 
 		$scope.parties = $meteor.collection(function() {
 			return Parties.find({}, {
@@ -102,5 +103,9 @@ angular.module('socially').controller('PartiesListCtrl', [
 				$scope.sort = {name: parseInt($scope.orderProperty)};
 			}
 		});
+
+		$scope.upload = function(partyId) {
+			
+		};
 
 	}]);
